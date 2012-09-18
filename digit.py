@@ -82,7 +82,23 @@ def nnCostFunction(nn_params, input_layer_size, hidden_layer_size,
                      (hidden_layer_size, input_layer_size + 1))
     theta2 = reshape(nn_params[hidden_layer_size * (input_layer_size + 1):],
                      (num_labels, hidden_layer_size + 1))    
-
+    
+    # Number of training sets                 
+    m = X.shape[0]
+    
+    J = 0
+    theta1_grad = zeros(theta1.shape)
+    theta2_grad = zeros(theta2.shape)
+    
+    # Calculate J
+    
+    # Calculate gradients    
+    
+    # Unroll gradients
+    grad = concatenate((theta1_grad.flatten(), theta2_grad.flatten()), axis=1)
+        
+    return J, grad
+    
 def main():
     input_layer_size = 20 * 20
     hidden_layer_size = 25
