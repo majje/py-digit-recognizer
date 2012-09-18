@@ -54,7 +54,7 @@ def loadMatlabData(filename):
         training, cross validation and test.
     """
    
-   # Load the training data
+    # Load the training data
     print "Loading training data..."
     data = loadmat(filename)
     X = data['X']
