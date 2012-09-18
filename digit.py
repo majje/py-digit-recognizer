@@ -13,10 +13,6 @@ from pylab import sqrt, floor, ceil, zeros, divide, remainder, permutation
 from pylab import concatenate
 from numpy.core.fromnumeric import reshape
 
-input_layer_size = 20 * 20
-hidden_layer_size = 25
-num_labels = 10
-
 def displayData(X):
     print "Visualizing"
     m, n = X.shape
@@ -88,6 +84,10 @@ def nnCostFunction(nn_params, input_layer_size, hidden_layer_size,
                      (num_labels, hidden_layer_size + 1))    
 
 def main():
+    input_layer_size = 20 * 20
+    hidden_layer_size = 25
+    num_labels = 10
+
     X, y = loadMatlabData('./ex4data1.mat')
     
     theta1, theta2 = loadWeights('./ex4weights.mat')
