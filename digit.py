@@ -81,10 +81,11 @@ def nnCostFunction(nn_params, input_layer_size, hidden_layer_size,
 
     print nn_params[0:hidden_layer_size * input_layer_size].shape
     
-    theta1 = reshape(nn_params[0:hidden_layer_size * input_layer_size],
-                     hidden_layer_size, input_layer_size)
-    theta2 = reshape(nn_params[hidden_layer_size * input_layer_size + 1:],
-                               num_labels, hidden_layer_size)    
+    # Reshape the unrolled parameter vector. Remember the bias nodes.
+    theta1 = reshape(nn_params[0:hidden_layer_size * (input_layer_size + 1)],
+                     (hidden_layer_size, input_layer_size + 1))
+    theta2 = reshape(nn_params[hidden_layer_size * (input_layer_size + 1):],
+                     (num_labels, hidden_layer_size + 1))    
 
 def main():
     X, y = loadMatlabData('./ex4data1.mat')
