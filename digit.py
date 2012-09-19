@@ -102,7 +102,7 @@ def nnCostFunction(nn_params, input_layer_size, hidden_layer_size,
     for i in range(0, Y.shape[0]):
         Y[i,y[i]] = 1.0
 
-    # Calculate the hypothesis, h (the activation in layer 3, a3)            
+    # Calculate the hypothesis, h (or a3, the activation in layer 3)            
     a1 = concatenate((ones((X.shape[0],1)),X), axis=1)
     z2 = dot(a1, theta1.transpose())
     a2 = concatenate((ones((X.shape[0],1)),sigmoid(z2)), axis=1)    
