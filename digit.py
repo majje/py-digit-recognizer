@@ -5,13 +5,13 @@ Created on Mon Sep 10 21:39:36 2012
 @author: Magnus Ericmats
 """
 
-from matplotlib.pyplot import imshow
+from matplotlib.pyplot import imshow, draw, show
 from matplotlib.cm import get_cmap
-from matplotlib.pyplot import draw, show
 from scipy.io import loadmat
 from pylab import sqrt, floor, ceil, zeros, divide, remainder, permutation
-from pylab import concatenate
+from pylab import concatenate, ones
 from numpy.core.fromnumeric import reshape
+from numpy import dot, exp, log
 
 def displayData(X):
     print "Visualizing"
@@ -72,6 +72,9 @@ def loadWeights(filename):
     return theta1, theta2    
     
 
+def sigmoid(z):
+    return 1 / (1 + exp(-z))
+    
 def nnCostFunction(nn_params, input_layer_size, hidden_layer_size,
                    num_labels, X, y, Lambda):
 
@@ -86,12 +89,29 @@ def nnCostFunction(nn_params, input_layer_size, hidden_layer_size,
     # Number of training sets                 
     m = X.shape[0]
     
+    # Return this
     J = 0
     theta1_grad = zeros(theta1.shape)
     theta2_grad = zeros(theta2.shape)
+
+    # Substitute all y=num_labels to 0, as python index starts with 0    
+    y = y + (y == num_labels) * -num_labels
     
-    # Calculate J
-    
+    # From y, craete a matrix with zeros and ones
+    Y = zeros((y.shape[0], num_labels))
+    for i in range(0, Y.shape[0]):
+        Y[i,y[i]] = 1.0
+
+    # Calculate the hypothesis, h (the activation in layer 3, a3)            
+    a1 = concatenate((ones((X.shape[0],1)),X), axis=1)
+    z2 = dot(a1, theta1.transpose())
+    a2 = concatenate((ones((X.shape[0],1)),sigmoid(z2)), axis=1)    
+    z3 = dot(a2, theta2.transpose())
+    h = sigmoid(z3)                     # or a3    
+
+    # Calculate J 
+    s = 1.0/m*(-Y*log(h) - (1.0-Y)*log(1.0-h)).sum()
+    print s
     # Calculate gradients    
     
     # Unroll gradients
