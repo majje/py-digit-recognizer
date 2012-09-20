@@ -11,7 +11,7 @@ from scipy.io import loadmat
 from pylab import sqrt, floor, ceil, zeros, divide, remainder, permutation
 from pylab import concatenate, ones
 from numpy.core.fromnumeric import reshape
-from numpy import dot, exp, log, mat
+from numpy import dot, exp, log, mat, square
 
 def displayData(X):
     print "Visualizing"
@@ -109,9 +109,17 @@ def nnCostFunction(nn_params, input_layer_size, hidden_layer_size,
     z3 = dot(a2, theta2.transpose())
     h = sigmoid(z3)                     # or a3    
 
-    # Calculate J 
+    # s - sum term of J
     s = (-Y*log(h) - (1.0-Y)*log(1.0-h)).sum()
-    J = 1.0/m*s
+
+    # Don't regularize the bias terms (on index 0) 
+    t1 = theta1[:,1:]
+    t2 = theta2[:,1:]
+
+    # reg - Regularization term of J
+    reg = Lambda/(2*m) * (square(t1).sum() + square(t2).sum()).sum()    
+    # J - Cost
+    J = 1.0/m*s + reg
     
     # Calculate gradients    
     
