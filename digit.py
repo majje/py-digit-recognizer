@@ -75,6 +75,9 @@ def loadWeights(filename):
 def sigmoid(z):
     return 1 / (1 + exp(-z))
     
+def sigmoidGradient(z):
+    return sigmoid(z) * (1.0-sigmoid(z))
+    
 def nnCostFunction(nn_params, input_layer_size, hidden_layer_size,
                    num_labels, X, y, Lambda):
 
@@ -122,6 +125,19 @@ def nnCostFunction(nn_params, input_layer_size, hidden_layer_size,
     J = 1.0/m*s + reg
     
     # Calculate gradients    
+    d3 = h - Y
+    d2 = dot(d3, t2) * sigmoidGradient(z2)
+    grad2 = 1.0/m * dot(d3.transpose(), a2)
+    grad1 = 1.0/m * dot(d2.transpose(), a1)
+    
+    # Calculate the regularization term of the gradients
+    theta1_grad_reg = theta1
+    theta2_grad_reg = theta2
+    theta1_grad_reg[:,0] = 0
+    theta2_grad_reg[:,0] = 0
+    
+    theta1_grad = grad1 + Lambda/m*theta1_grad_reg
+    theta2_grad = grad2 + Lambda/m*theta2_grad_reg
     
     # Unroll gradients
     grad = concatenate((theta1_grad.flatten(), theta2_grad.flatten()), axis=1)
