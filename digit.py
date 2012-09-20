@@ -138,7 +138,7 @@ def main():
     J, grad = nnCostFunction(nn_params, input_layer_size, hidden_layer_size,
                        num_labels, X, y, Lambda)
     
-    print "Cost at parameters parameters (loaded from ex4weights.mat):", J
+    print "Cost at parameters (loaded from ex4weights.mat):", J
     print "(this value should be about 0.287629)"
     # Make sure the plots are not closed    
     show()    
