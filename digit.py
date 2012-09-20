@@ -11,7 +11,7 @@ from scipy.io import loadmat
 from pylab import sqrt, floor, ceil, zeros, divide, remainder, permutation
 from pylab import concatenate, ones
 from numpy.core.fromnumeric import reshape
-from numpy import dot, exp, log
+from numpy import dot, exp, log, mat
 
 def displayData(X):
     print "Visualizing"
@@ -94,8 +94,8 @@ def nnCostFunction(nn_params, input_layer_size, hidden_layer_size,
     theta1_grad = zeros(theta1.shape)
     theta2_grad = zeros(theta2.shape)
 
-    # Substitute all y=num_labels to 0, as python index starts with 0    
-    y = y + (y == num_labels) * -num_labels
+    # Substitute all ys as the data presumes indexing starts at 1    
+    y = y - 1
     
     # From y, craete a matrix with zeros and ones
     Y = zeros((y.shape[0], num_labels))
@@ -110,8 +110,9 @@ def nnCostFunction(nn_params, input_layer_size, hidden_layer_size,
     h = sigmoid(z3)                     # or a3    
 
     # Calculate J 
-    s = 1.0/m*(-Y*log(h) - (1.0-Y)*log(1.0-h)).sum()
-    print s
+    s = (-Y*log(h) - (1.0-Y)*log(1.0-h)).sum()
+    J = 1.0/m*s
+    
     # Calculate gradients    
     
     # Unroll gradients
@@ -134,9 +135,11 @@ def main():
     Lambda = 0
     
     # Calculate the cost function
-    J = nnCostFunction(nn_params, input_layer_size, hidden_layer_size,
+    J, grad = nnCostFunction(nn_params, input_layer_size, hidden_layer_size,
                        num_labels, X, y, Lambda)
-                       
+    
+    print "Cost at parameters parameters (loaded from ex4weights.mat):", J
+    print "(this value should be about 0.287629)"
     # Make sure the plots are not closed    
     show()    
     
